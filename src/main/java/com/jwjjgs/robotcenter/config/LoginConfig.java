@@ -22,7 +22,7 @@ public class LoginConfig implements WebMvcConfigurer {
         // excludePathPatterns 不拦截方法是
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**") //拦截所有 的url
-                //.excludePathPatterns("/login/*");  //不拦截登录
-                .excludePathPatterns("/**");  //不拦截登录
+                .excludePathPatterns("/login/*");  //不拦截登录
+//                .excludePathPatterns("/**");  //不拦截登录
     }
 }
