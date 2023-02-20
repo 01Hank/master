@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: robot-center
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    name:
+    url: jdbc:mysql://121.5.156.234:13307/dn?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true&tinyInt1isBit=false
+    username: test
+    password: qweasd123
+
+mybatis-plus:
+    mapper-locations: classpath:mapper/*/*.xml
+    type-aliases-package: com.first.litapp_dn.pojo
+    configuration:
+      map-underscore-to-camel-case: true
+    global-config:
+      db-config:
+        logic-not-delete-value: N
+        logic-delete-value: Y
+        logic-delete-field: deleteFlag
+
+server:
+  port: 8080
+
+jwt:
+  secret: qweasd/><zxc123[]\qweasd/><zxc123[]
