@@ -4,9 +4,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     name:
-    url: jdbc:mysql://121.5.156.234:13307/dn?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true&tinyInt1isBit=false
-    username: test
-    password: qweasd123
+    url: jdbc:mysql://mysql.jwjjgs.cn:6033/robot?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true&tinyInt1isBit=false
+    username: root
+    password: qwer1234.
 
 mybatis-plus:
     mapper-locations: classpath:mapper/*/*.xml
