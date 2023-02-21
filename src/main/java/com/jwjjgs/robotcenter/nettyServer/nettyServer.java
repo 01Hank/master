@@ -1,9 +1,7 @@
 package com.jwjjgs.robotcenter.nettyServer;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
@@ -52,8 +50,15 @@ public class nettyServer {
             //绑定端口 同步等待成功
             ChannelFuture f = bootstrap.bind(port).sync();
             //等待服务端监听端口关闭
-            f.channel().closeFuture().sync();
-            log.info("-----------启动netty服务端成功");
+            f.channel().closeFuture().addListener(new ChannelFutureListener() {
+                                                      @Override
+                                                      public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                                                          // 我们可以通过ChannelFuture对象获取channel对象 然后再发送数据
+                                                          Channel channel = channelFuture.channel();
+                                                          channel.writeAndFlush("连接成功！！");
+                                                      }
+                                                  });
+            log.info("-----------启动netty服务端成功!!!");
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
