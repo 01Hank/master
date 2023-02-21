@@ -8,8 +8,6 @@ import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
 
-public interface BaseHandler<T extends Message> {
+public interface BaseHandler {
     void execute() throws InvalidProtocolBufferException;
-
-    void deserialize(byte[] data) throws IOException;
 }

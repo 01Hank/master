@@ -42,9 +42,7 @@ public class CenterContextAware implements ApplicationContextAware, CommandLineR
     private static CenterContextAware awar = null;
 
     public static CenterContextAware getInstance(){
-        System.out.println("------获取单利");
         if (awar == null) {
-            System.out.println("----新建");
             awar = new CenterContextAware();
         }
 
@@ -83,8 +81,8 @@ public class CenterContextAware implements ApplicationContextAware, CommandLineR
      */
     public  void initMsgHandler() {
         Map<String, BaseHandler> beansOfType = context.getBeansOfType(BaseHandler.class);
-        for (BaseHandler<GeneratedMessageV3> handler : beansOfType.values()) {
-            Class<? extends BaseHandler<GeneratedMessageV3>> aClass = (Class<? extends BaseHandler<GeneratedMessageV3>>) handler.getClass();
+        for (BaseHandler handler : beansOfType.values()) {
+            Class<? extends BaseHandler> aClass =  handler.getClass();
             MsgHandler msg = aClass.getAnnotation(MsgHandler.class);
             if (msg != null) {
                 String simpleName = msg.clzz().getSimpleName();

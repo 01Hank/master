@@ -1,6 +1,7 @@
 package com.jwjjgs.robotcenter.nettyServer;
 
 
+import com.google.protobuf.Message;
 import com.jwjjgs.robotcenter.handler.BaseHandlerImpl;
 import com.jwjjgs.robotcenter.pojo.protoFile.Package;
 import io.netty.channel.ChannelHandlerContext;
@@ -49,7 +50,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
     protected void channelRead0(ChannelHandlerContext ctx, PackageClass msg) throws Exception {
         BaseHandlerImpl<PackageClass> handler = aware.createHandler(msg.getMsgName());
         handler.setCtx(ctx);
-        handler.deserialize(msg.getData());
+        handler.setContent(handler.deserialize(msg.getData()));
         handler.execute();
     }
 

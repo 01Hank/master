@@ -21,7 +21,6 @@ public class MsgDecoder extends ByteToMessageDecoder{
 
     private static CenterContextAware aware = CenterContextAware.getInstance();
 
-
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         log.info("MsgDecoder decode length:{}", in.readableBytes());

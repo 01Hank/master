@@ -26,8 +26,7 @@ public class StudentHandler extends BaseHandlerImpl<Msg.Student> {
     }
 
     @Override
-    public void deserialize(byte[] data) throws IOException {
-        Msg.Student student = Msg.Student.parseFrom(data);
-        setContent(student);
+    public Msg.Student deserialize(byte[] data) throws IOException {
+        return Msg.Student.parseFrom(data);
     }
 }

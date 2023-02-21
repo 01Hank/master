@@ -30,5 +30,6 @@ public class MsgEncoder extends MessageToByteEncoder<Message> {
         out.writeInt(aware.getVersion());
         //response包
         out.writeBytes(bytes);
+        log.info("----------encode message:{}", simpleName);
     }
 }
