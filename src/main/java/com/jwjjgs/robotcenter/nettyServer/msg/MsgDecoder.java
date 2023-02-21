@@ -24,7 +24,7 @@ public class MsgDecoder extends ByteToMessageDecoder{
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        log.info("MsgDecoder decode length:{}", in.readableBytes());
+        log.info("---------MsgDecoder decode length:{}", in.readableBytes());
 
         //标记一下当前下标
         in.markReaderIndex();
@@ -45,6 +45,7 @@ public class MsgDecoder extends ByteToMessageDecoder{
             return;
         }
 
+        //读数据
         byte[] array;
         if(in.hasArray()){
             ByteBuf slice = in.slice();
@@ -56,13 +57,12 @@ public class MsgDecoder extends ByteToMessageDecoder{
 
         Package.Request request = Package.Request.parseFrom(array);
         String protoName = request.getProtoName();
-        ByteString data = request.getData();
-        Class<? extends Message> clzz = aware.getProtoClass(protoName);
-        if (clzz == null){
+        if(!aware.isDispatchProto(protoName)){
             log.error("-------client error protoName:{}", protoName);
             return;
         }
 
+        ByteString data = request.getData();
         //封装成package类
         PackageClass aClass = new PackageClass();
         aClass.setLen(length);
@@ -70,5 +70,6 @@ public class MsgDecoder extends ByteToMessageDecoder{
         aClass.setData(data.toByteArray());
 
         out.add(aClass);
+        log.info("---------read protoName{} suc!!", protoName);
     }
 }

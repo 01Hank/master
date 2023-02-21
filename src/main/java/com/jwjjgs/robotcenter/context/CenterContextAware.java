@@ -1,6 +1,5 @@
 package com.jwjjgs.robotcenter.context;
 
-import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Message;
 import com.jwjjgs.robotcenter.common.annotation.MsgHandler;
 import com.jwjjgs.robotcenter.handler.BaseHandler;
@@ -109,13 +108,15 @@ public class CenterContextAware implements ApplicationContextAware, CommandLineR
     }
 
     /**
-     * 加载proto类
+     * 是否可处理的proto协议
      * @param protoName
      * @return
-     * @throws ClassNotFoundException
      */
-    public  Class<? extends Message> getProtoClass(String protoName) throws InstantiationException, IllegalAccessException {
-        return this.msgFactory.get(protoName);
+    public boolean isDispatchProto(String protoName){
+        if(this.msgFactory.get(protoName) == null){
+            return  false;
+        }
+        return true;
     }
 
     /**
