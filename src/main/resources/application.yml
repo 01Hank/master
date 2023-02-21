@@ -25,5 +25,8 @@ server:
 netty:
   port: 8081
 
+proto:
+  path: com\jwjjgs\robotcenter\pojo\protoFile
+
 jwt:
   secret: qweasd/><zxc123[]\qweasd/><zxc123[]

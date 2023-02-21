@@ -18,9 +18,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/demo")
 public class DemoController {
+    
     @GetMapping("/test")
     public ResponseVo getTest(@Valid DemoReq demoReq){
-
         return new ResponseVo(ResultStatusEnum.SUCCESS);
     }
 

@@ -1,22 +1,22 @@
 package com.jwjjgs.robotcenter.nettyServer;
 
-import com.google.protobuf.GeneratedMessageV3;
-import com.google.protobuf.Message;
-import com.jwjjgs.robotcenter.common.handler.MsgInfo;
-import com.jwjjgs.robotcenter.common.threadPool.DisMonitorTaskServer;
-import com.jwjjgs.robotcenter.handler.BaseHandler;
+
+import com.jwjjgs.robotcenter.handler.BaseHandlerImpl;
+import com.jwjjgs.robotcenter.pojo.protoFile.Package;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import com.jwjjgs.robotcenter.context.CenterContextAware;
-import com.jwjjgs.robotcenter.pojo.protoFile.Msg;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.InetAddress;
+import java.net.SocketAddress;
 
-public class ServerHandler extends SimpleChannelInboundHandler<Message> {
-    /**
-     * 任务线程分发服务
-     */
-    private DisMonitorTaskServer server = null;
+public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
+    private static final Logger log = LoggerFactory.getLogger(ServerHandler.class);
+    @Autowired
+    private CenterContextAware awar;
 
     /**
      * 覆盖 channelActive 方法 在channel被启用的时候触发 (在建立连接的时候)
@@ -25,10 +25,14 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
      * @throws Exception
      */
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("RamoteAddress : " + ctx.channel().remoteAddress() + " active !");
-        String welcome = "Welcome to " + InetAddress.getLocalHost().getHostName() + " service!";
-        Msg.Student.Response response = Msg.Student.Response.newBuilder().setOk(101).build();
-        ctx.writeAndFlush(response);
+        SocketAddress socketAddress = ctx.channel().remoteAddress();
+        awar.putCtx(socketAddress.toString(), ctx);
+
+        Package.ConnectSuc.Builder builder = Package.ConnectSuc.newBuilder();
+        builder.setOk(1).build();
+        ctx.writeAndFlush(builder);
+
+        log.info("----------RamoteAddress : " + ctx.channel().remoteAddress() + " active !");
         super.channelActive(ctx);
     }
 
@@ -40,21 +44,23 @@ public class ServerHandler extends SimpleChannelInboundHandler<Message> {
      * @throws Exception
      */
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-        if (this.server == null) {
-            this.server = new DisMonitorTaskServer(10, "玩家监听", 2000L, 10000L);
-        }
+    protected void channelRead0(ChannelHandlerContext ctx, PackageClass msg) throws Exception {
+        BaseHandlerImpl<PackageClass> handler = awar.createHandler(msg.getMsgName());
+        handler.setCtx(ctx);
+        handler.execute(msg);
+    }
 
-        //包装消息
-        MsgInfo msgInfo = new MsgInfo();
-        msgInfo.setType(1);
-        msgInfo.setMessage(msg);
-        msgInfo.setPlayerId(12345);
-        msgInfo.setCtx(ctx);
-//        this.server.putMsg(msgInfo, 1);
-        //创建handler
-        String simpleName = msg.getClass().getSimpleName();
-        BaseHandler<GeneratedMessageV3> handler = CenterContextAware.createHandler(simpleName);
-        handler.execute(msgInfo);
+    /**
+     * 通道关闭
+     * @param ctx
+     * @throws Exception
+     */
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        SocketAddress socketAddress = ctx.channel().remoteAddress();
+        awar.delCtx(socketAddress.toString());
+
+        log.info("----------RamoteAddress : " + socketAddress.toString() + " remove!");
+        super.handlerRemoved(ctx);
     }
 }

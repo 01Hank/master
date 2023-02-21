@@ -49,15 +49,7 @@ public class nettyServer {
         try {
             //绑定端口 同步等待成功
             ChannelFuture f = bootstrap.bind(port).sync();
-            //等待服务端监听端口关闭
-            f.channel().closeFuture().addListener(new ChannelFutureListener() {
-                                                      @Override
-                                                      public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                                                          // 我们可以通过ChannelFuture对象获取channel对象 然后再发送数据
-                                                          Channel channel = channelFuture.channel();
-                                                          channel.writeAndFlush("连接成功！！");
-                                                      }
-                                                  });
+            f.channel().closeFuture().addListener(ChannelFutureListener.CLOSE);
             log.info("-----------启动netty服务端成功!!!");
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -72,6 +64,6 @@ public class nettyServer {
     public void destory() throws InterruptedException {
         boss.shutdownGracefully().sync();
         work.shutdownGracefully().sync();
-        log.info("关闭netty!!!");
+        log.info("-----------关闭netty!!!");
     }
 }
