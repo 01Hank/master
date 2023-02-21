@@ -22,5 +22,8 @@ mybatis-plus:
 server:
   port: 8080
 
+netty:
+  port: 8081
+
 jwt:
   secret: qweasd/><zxc123[]\qweasd/><zxc123[]

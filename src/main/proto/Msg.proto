@@ -1,0 +1,13 @@
+syntax = "proto3";
+//生成文件所在包名
+option java_package = "com.jwjjgs.robotcenter.pojo.protoFile";
+//生成的java文件名
+option java_outer_classname = "Msg";
+
+message Student {
+  string name = 1;
+  int32 age = 2;
+  message Response {
+    int32 ok = 1;
+  }
+}
