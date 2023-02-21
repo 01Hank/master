@@ -56,7 +56,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
      * @throws Exception
      */
     @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         SocketAddress socketAddress = ctx.channel().remoteAddress();
         awar.delCtx(socketAddress.toString());
 
