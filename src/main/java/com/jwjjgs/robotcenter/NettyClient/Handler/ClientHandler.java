@@ -1,14 +1,19 @@
 package com.jwjjgs.robotcenter.NettyClient.Handler;
 
 import com.google.protobuf.Message;
+import com.jwjjgs.robotcenter.nettyServer.PackageClass;
 import com.jwjjgs.robotcenter.pojo.protoFile.Msg;
+import com.jwjjgs.robotcenter.pojo.protoFile.Package;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-public class ClientHandler extends SimpleChannelInboundHandler<Message> {
+public class ClientHandler extends SimpleChannelInboundHandler<PackageClass> {
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Message msg) throws Exception {
-        System.out.println("Server say : " + msg.toString());
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, PackageClass msg) throws Exception {
+        byte[] data = msg.getData();
+        Package.ConnectSuc connectSuc = Package.ConnectSuc.parseFrom(data);
+        System.out.println("-------返回:"+ connectSuc.getOk());
+        //System.out.println("Server say : " + msg.toString());
     }
 
     /**

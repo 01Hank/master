@@ -6,12 +6,11 @@ import com.jwjjgs.robotcenter.common.annotation.MsgHandler;
 import com.jwjjgs.robotcenter.handler.BaseHandler;
 import com.jwjjgs.robotcenter.handler.BaseHandlerImpl;
 import com.jwjjgs.robotcenter.nettyServer.PackageClass;
-import com.jwjjgs.robotcenter.nettyServer.ser.ProtostuffSerializeI;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -24,32 +23,38 @@ import java.util.Map;
 public class CenterContextAware implements ApplicationContextAware, CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(CenterContextAware.class);
 
-    @Autowired
-    private ProtostuffSerializeI serializeI;
+    @Value("${version}")
+    private Integer version = 1;
 
-    private  ApplicationContext context = null;
+    private static   ApplicationContext context = null;
 
     //handler工厂
-    private  Map<String, Class<? extends BaseHandler>> factory = new HashMap<>();
+    private static   Map<String, Class<? extends BaseHandler>> factory = new HashMap<>();
 
     //msg工厂
-    private  Map<String, Class<? extends Message>> msgFactory = new HashMap<>();
+    private static   Map<String, Class<? extends Message>> msgFactory = new HashMap<>();
 
     //所有连接
-    private  Map<String, ChannelHandlerContext> ctxs = new HashMap<>();
-
+    private static   Map<String, ChannelHandlerContext> ctxs = new HashMap<>();
 
     private CenterContextAware(){}
 
     private static CenterContextAware awar = null;
 
     public static CenterContextAware getInstance(){
+        System.out.println("------获取单利");
         if (awar == null) {
+            System.out.println("----新建");
             awar = new CenterContextAware();
         }
 
         return awar;
     }
+
+    public Integer getVersion() {
+        return version;
+    }
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -64,13 +69,12 @@ public class CenterContextAware implements ApplicationContextAware, CommandLineR
     /**
      * 获取bean
      *
-     * @param tClass
+     * @param clazz
      * @param <T>
      * @return
      */
-    public  <T> T getBean(Class<T> tClass) {
-        Class bean = context.getBean(tClass.getClass());
-        return (T) bean;
+    public static <T> T getBean(Class<T> clazz) {
+        return context.getBean(clazz);
     }
 
 
@@ -109,9 +113,8 @@ public class CenterContextAware implements ApplicationContextAware, CommandLineR
      * @return
      * @throws ClassNotFoundException
      */
-    public  Message loadProto(String protoName, byte[] data) throws InstantiationException, IllegalAccessException {
-        Class<? extends Message> clzz = msgFactory.get(protoName);
-        return this.serializeI.deserialize(data, clzz);
+    public  Class<? extends Message> getProtoClass(String protoName) throws InstantiationException, IllegalAccessException {
+        return this.msgFactory.get(protoName);
     }
 
     /**

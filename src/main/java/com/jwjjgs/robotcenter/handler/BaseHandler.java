@@ -2,9 +2,14 @@ package com.jwjjgs.robotcenter.handler;
 
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
 import com.jwjjgs.robotcenter.nettyServer.PackageClass;
 import io.netty.channel.ChannelHandlerContext;
 
-public interface BaseHandler<S extends GeneratedMessageV3> {
-    void execute(PackageClass packge) throws InvalidProtocolBufferException;
+import java.io.IOException;
+
+public interface BaseHandler<T extends Message> {
+    void execute() throws InvalidProtocolBufferException;
+
+    void deserialize(byte[] data) throws IOException;
 }

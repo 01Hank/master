@@ -29,10 +29,11 @@ public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
         InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
         aware.putCtx(address.getHostString(), ctx);
 
-        Package.ConnectSuc.Builder builder = Package.ConnectSuc.newBuilder();
-        builder.setOk(1).build();
-        ctx.writeAndFlush(builder);
-
+        //连接成功返回
+        Package.ConnectSuc.Builder response = Package.ConnectSuc.newBuilder();
+        response.setOk(1)
+                .build();
+        ctx.writeAndFlush(response);
         log.info("----------RamoteAddress : " + address.getHostString() + " active !");
         super.channelActive(ctx);
     }
@@ -48,7 +49,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
     protected void channelRead0(ChannelHandlerContext ctx, PackageClass msg) throws Exception {
         BaseHandlerImpl<PackageClass> handler = aware.createHandler(msg.getMsgName());
         handler.setCtx(ctx);
-        handler.execute(msg);
+        handler.deserialize(msg.getData());
+        handler.execute();
     }
 
     /**

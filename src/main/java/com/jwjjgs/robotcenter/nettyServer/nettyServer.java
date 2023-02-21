@@ -1,5 +1,7 @@
 package com.jwjjgs.robotcenter.nettyServer;
 
+import com.jwjjgs.robotcenter.context.CenterContextAware;
+import com.jwjjgs.robotcenter.pojo.protoFile.Msg;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -27,6 +29,8 @@ public class nettyServer {
      */
     private static final EventLoopGroup work = new NioEventLoopGroup();
 
+    private static CenterContextAware aware = CenterContextAware.getInstance();
+
     @Value("${netty.port}")
     private Integer port;
 
@@ -49,7 +53,7 @@ public class nettyServer {
         try {
             //绑定端口 同步等待成功
             ChannelFuture f = bootstrap.bind(port).sync();
-            //f.channel().closeFuture().addListener(ChannelFutureListener.CLOSE);
+            f.channel().closeFuture().addListener(ChannelFutureListener.CLOSE);
             log.info("-----------启动netty服务端成功, 端口:{}!!!", port);
         } catch (InterruptedException e) {
             e.printStackTrace();

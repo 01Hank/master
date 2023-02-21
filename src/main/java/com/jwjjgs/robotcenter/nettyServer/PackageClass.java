@@ -11,14 +11,14 @@ public class PackageClass extends GeneratedMessageV3 {
     private String msgName;
 
     //包内容
-    private Message content;
+    private byte[] data;
 
     public void setLen(int len) {
         this.len = len;
     }
 
-    public void setContent(Message content) {
-        this.content = content;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
     public void setMsgName(String msgName) {
@@ -33,8 +33,8 @@ public class PackageClass extends GeneratedMessageV3 {
         return len;
     }
 
-    public Message getContent() {
-        return content;
+    public byte[] getData() {
+        return data;
     }
 
     @Override
