@@ -39,6 +39,18 @@ public class CenterContextAware implements ApplicationContextAware, CommandLineR
     private  Map<String, ChannelHandlerContext> ctxs = new HashMap<>();
 
 
+    private CenterContextAware(){}
+
+    private static CenterContextAware awar = null;
+
+    public static CenterContextAware getInstance(){
+        if (awar == null) {
+            awar = new CenterContextAware();
+        }
+
+        return awar;
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;

@@ -9,14 +9,15 @@ import com.jwjjgs.robotcenter.context.CenterContextAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.net.InetAddress;
-import java.net.SocketAddress;
+import java.net.InetSocketAddress;
 
+@Component
 public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
     private static final Logger log = LoggerFactory.getLogger(ServerHandler.class);
-    @Autowired
-    private CenterContextAware awar;
+
+    private static CenterContextAware aware = CenterContextAware.getInstance();
 
     /**
      * 覆盖 channelActive 方法 在channel被启用的时候触发 (在建立连接的时候)
@@ -25,14 +26,14 @@ public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
      * @throws Exception
      */
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        SocketAddress socketAddress = ctx.channel().remoteAddress();
-        awar.putCtx(socketAddress.toString(), ctx);
+        InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        aware.putCtx(address.getHostString(), ctx);
 
         Package.ConnectSuc.Builder builder = Package.ConnectSuc.newBuilder();
         builder.setOk(1).build();
         ctx.writeAndFlush(builder);
 
-        log.info("----------RamoteAddress : " + ctx.channel().remoteAddress() + " active !");
+        log.info("----------RamoteAddress : " + address.getHostString() + " active !");
         super.channelActive(ctx);
     }
 
@@ -45,7 +46,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PackageClass msg) throws Exception {
-        BaseHandlerImpl<PackageClass> handler = awar.createHandler(msg.getMsgName());
+        BaseHandlerImpl<PackageClass> handler = aware.createHandler(msg.getMsgName());
         handler.setCtx(ctx);
         handler.execute(msg);
     }
@@ -57,10 +58,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        SocketAddress socketAddress = ctx.channel().remoteAddress();
-        awar.delCtx(socketAddress.toString());
+        InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        aware.delCtx(address.getHostString());
 
-        log.info("----------RamoteAddress : " + socketAddress.toString() + " remove!");
+        log.info("----------RamoteAddress : " + address.getHostString() + " remove!");
         super.handlerRemoved(ctx);
     }
 }

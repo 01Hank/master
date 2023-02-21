@@ -49,13 +49,10 @@ public class nettyServer {
         try {
             //绑定端口 同步等待成功
             ChannelFuture f = bootstrap.bind(port).sync();
-            f.channel().closeFuture().addListener(ChannelFutureListener.CLOSE);
+            //f.channel().closeFuture().addListener(ChannelFutureListener.CLOSE);
             log.info("-----------启动netty服务端成功, 端口:{}!!!", port);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally {
-            work.shutdownGracefully();
-            boss.shutdownGracefully();
         }
     }
 
