@@ -4,7 +4,6 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.Message;
 import com.jwjjgs.robotcenter.context.CenterContextAware;
 import com.jwjjgs.robotcenter.nettyServer.PackageClass;
-import com.jwjjgs.robotcenter.pojo.protoFile.Msg;
 import com.jwjjgs.robotcenter.pojo.protoFile.Package;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,9 +11,11 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
+/**
+ * 解码器
+ */
 @Component
 public class MsgDecoder extends ByteToMessageDecoder{
     private static final Logger log = LoggerFactory.getLogger(MsgDecoder.class);

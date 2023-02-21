@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * 编码器
+ */
 @Component
 public class MsgEncoder extends MessageToByteEncoder<Message> {
     private static final Logger log = LoggerFactory.getLogger(MsgEncoder.class);

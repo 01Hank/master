@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 上下文context
+ */
 @Component
 public class CenterContextAware implements ApplicationContextAware, CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(CenterContextAware.class);

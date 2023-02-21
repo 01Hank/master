@@ -3,6 +3,9 @@ package com.jwjjgs.robotcenter.nettyServer;
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Message;
 
+/**
+ * 包数据格式
+ */
 public class PackageClass extends GeneratedMessageV3 {
     //定义包长
     private int len;

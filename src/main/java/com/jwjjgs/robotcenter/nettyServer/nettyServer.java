@@ -29,8 +29,6 @@ public class nettyServer {
      */
     private static final EventLoopGroup work = new NioEventLoopGroup();
 
-    private static CenterContextAware aware = CenterContextAware.getInstance();
-
     @Value("${netty.port}")
     private Integer port;
 

@@ -1,7 +1,5 @@
 package com.jwjjgs.robotcenter.nettyServer;
 
-
-import com.google.protobuf.Message;
 import com.jwjjgs.robotcenter.handler.BaseHandlerImpl;
 import com.jwjjgs.robotcenter.pojo.protoFile.Package;
 import io.netty.channel.ChannelHandlerContext;
@@ -9,11 +7,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import com.jwjjgs.robotcenter.context.CenterContextAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 
+/**
+ * 处理主handler
+ */
 @Component
 public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
     private static final Logger log = LoggerFactory.getLogger(ServerHandler.class);
@@ -63,7 +63,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<PackageClass> {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
         aware.delCtx(address.getHostString());
-
         log.info("----------RamoteAddress : " + address.getHostString() + " remove!");
         super.handlerRemoved(ctx);
     }
