@@ -1,4 +1,4 @@
-package com.jwjjgs.robotcenter.NettyClient.Handler;
+package com.jwjjgs.robotcenter.nettyClient.Handler;
 
 import com.google.protobuf.ByteString;
 import com.jwjjgs.robotcenter.nettyServer.util.PackageClass;

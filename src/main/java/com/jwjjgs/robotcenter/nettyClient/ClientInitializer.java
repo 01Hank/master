@@ -1,16 +1,13 @@
-package com.jwjjgs.robotcenter.NettyClient;
+package com.jwjjgs.robotcenter.nettyClient;
 
 
-import com.jwjjgs.robotcenter.NettyClient.Handler.ClientHandler;
+import com.jwjjgs.robotcenter.nettyClient.Handler.ClientHandler;
 import com.jwjjgs.robotcenter.nettyServer.msg.MsgDecoder;
 import com.jwjjgs.robotcenter.nettyServer.msg.MsgEncoder;
-import com.jwjjgs.robotcenter.pojo.protoFile.Msg;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
 
 public class ClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override

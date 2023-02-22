@@ -1,4 +1,4 @@
-package com.jwjjgs.robotcenter.NettyClient;
+package com.jwjjgs.robotcenter.nettyClient;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
