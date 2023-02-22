@@ -1,10 +1,9 @@
 package com.jwjjgs.robotcenter.handler.file;
 
+import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.Message;
 import com.jwjjgs.robotcenter.common.annotation.MsgHandler;
 import com.jwjjgs.robotcenter.handler.BaseHandlerImpl;
-import com.jwjjgs.robotcenter.nettyServer.PackageClass;
 import com.jwjjgs.robotcenter.pojo.protoFile.Msg;
 import com.jwjjgs.robotcenter.pojo.protoFile.Package;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,7 @@ public class StudentHandler extends BaseHandlerImpl<Msg.Student> {
     }
 
     @Override
-    public Msg.Student deserialize(byte[] data) throws IOException {
+    public Msg.Student deserialize(ByteString data) throws IOException {
         return Msg.Student.parseFrom(data);
     }
 }
