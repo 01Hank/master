@@ -91,8 +91,6 @@ public class CenterContextAware implements ApplicationContextAware, CommandLineR
                 msgFactory.put(simpleName, msg.clzz());
             }
         }
-
-        log.error("-----------handler,meg工厂初始化完成, \nkeys:\n{}\nfactory:\n{}\nmsgFactory:\n{}", this.factory.keySet(), this.factory.values(), this.msgFactory.values());
     }
 
     /**
