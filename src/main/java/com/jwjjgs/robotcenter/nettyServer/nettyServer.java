@@ -32,7 +32,7 @@ public class nettyServer {
     @Value("${netty.port}")
     private Integer port;
 
-    @PostConstruct
+    //@PostConstruct
     public void start() throws InterruptedException {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(boss, work)
